@@ -1,11 +1,13 @@
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Image as ImageIcon, Settings, LogOut } from 'lucide-react';
+import { Home, Users, Image as ImageIcon, Settings, LogOut, Clock, LayoutDashboard } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: Home },
   { path: '/dashboard/people', label: 'People', icon: Users },
   { path: '/dashboard/templates', label: 'Templates', icon: ImageIcon },
+  { path: '/dashboard/history', label: 'History', icon: Clock },
   { path: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 

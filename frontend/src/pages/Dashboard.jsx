@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Calendar, Image as ImageIcon, CheckCircle } from 'lucide-react';
+import { Users, Gift, Calendar, Image as ImageIcon, CheckCircle } from 'lucide-react';
 
 const StatCard = ({ title, value, icon: Icon, color, delay }) => (
   <motion.div

@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PeopleList from './pages/PeopleList';
+import TemplateGallery from './pages/TemplateGallery';
+import PosterHistory from './pages/PosterHistory';
 
 function App() {
   return (
@@ -18,7 +20,8 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="people" element={<PeopleList />} />
-          {/* Templates, Settings will go here later */}
+          <Route path="templates" element={<TemplateGallery />} />
+          <Route path="history" element={<PosterHistory />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/auth/login" />} />

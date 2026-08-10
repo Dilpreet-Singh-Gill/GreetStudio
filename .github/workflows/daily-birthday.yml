@@ -1,0 +1,18 @@
+name: Daily Birthday Poster Automation
+
+on:
+  schedule:
+    # 2:30 AM UTC is 8:00 AM IST
+    - cron: '30 2 * * *'
+  workflow_dispatch: # Allows manual trigger from the Actions tab
+
+jobs:
+  trigger-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Backend API
+        run: |
+          curl -X POST "${{ secrets.BACKEND_API_URL }}/api/scheduler/daily-run" \
+          -H "X-Cron-Secret: ${{ secrets.CRON_SECRET }}" \
+          -H "Content-Length: 0" \
+          --fail-with-body

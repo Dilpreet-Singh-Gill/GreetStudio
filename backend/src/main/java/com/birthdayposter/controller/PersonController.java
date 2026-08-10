@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/people")
 @RequiredArgsConstructor
@@ -33,6 +36,11 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<PersonResponse> createPerson(@Valid @RequestBody PersonRequest request) {
         return ResponseEntity.ok(personService.createPerson(request));
+    }
+
+    @PostMapping("/upload-excel")
+    public ResponseEntity<List<PersonResponse>> uploadExcel(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(personService.bulkCreatePeople(file));
     }
 
     @PutMapping("/{id}")

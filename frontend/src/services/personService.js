@@ -24,5 +24,25 @@ export const personService = {
   deletePerson: async (id) => {
     const response = await api.delete(`/api/people/${id}`);
     return response.data;
-  }
+  },
+
+  uploadExcel: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post('/api/people/upload-excel', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  uploadPhoto: async (personId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post(`/api/media/upload-photo/${personId}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
 };

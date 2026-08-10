@@ -17,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,7 @@ public class PersonService {
     
     private final PersonRepository personRepository;
     private final UserRepository userRepository;
+    private final ExcelService excelService;
 
     private Long getCurrentUserId() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -104,6 +107,35 @@ public class PersonService {
         Person person = personRepository.findByIdAndUserId(id, getCurrentUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found"));
         personRepository.delete(person);
+    }
+
+    public List<PersonResponse> bulkCreatePeople(MultipartFile file) {
+        if (!excelService.hasExcelFormat(file)) {
+            throw new com.birthdayposter.exception.BadRequestException("Please upload an Excel file (.xlsx)!");
+        }
+
+        try {
+            List<PersonRequest> requests = excelService.parseExcelFile(file.getInputStream());
+            User currentUser = getCurrentUser();
+
+            List<Person> people = requests.stream()
+                    .map(req -> Person.builder()
+                            .name(req.getName())
+                            .email(req.getEmail())
+                            .dob(req.getDob())
+                            .department(req.getDepartment())
+                            .designation(req.getDesignation())
+                            .phone(req.getPhone())
+                            .relationship(req.getRelationship())
+                            .user(currentUser)
+                            .build())
+                    .collect(Collectors.toList());
+
+            List<Person> savedPeople = personRepository.saveAll(people);
+            return savedPeople.stream().map(this::mapToResponse).collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new com.birthdayposter.exception.BadRequestException("Failed to process Excel file: " + e.getMessage());
+        }
     }
 
     private PersonResponse mapToResponse(Person person) {

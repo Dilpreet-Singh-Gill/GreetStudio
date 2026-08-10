@@ -15,12 +15,44 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # Email Configuration (Brevo SMTP — free tier)
+  # Fallback: Gmail SMTP with App Password
+  mail:
+    host: ${MAIL_HOST:smtp-relay.brevo.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
 server:
   port: 8080
   error:
     include-message: always
 
 app:
+  cloudinary:
+    cloud-name: ${CLOUDINARY_CLOUD_NAME:}
+    api-key: ${CLOUDINARY_API_KEY:}
+    api-secret: ${CLOUDINARY_API_SECRET:}
+  huggingface:
+    api-key: ${HF_API_KEY:}
   jwt:
     secret: ${JWT_SECRET:9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d9}
     expirationMs: 86400000 # 24 hours
+  cron-secret: ${CRON_SECRET:default-secret-token-change-in-prod}
+  mail:
+    from: ${MAIL_FROM:noreply@greetstudio.com}
+    from-name: ${MAIL_FROM_NAME:GreetStudio}
