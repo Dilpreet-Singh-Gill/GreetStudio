@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
@@ -21,4 +22,11 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     Page<Person> findByUserIdAndSearch(@Param("userId") Long userId, @Param("search") String search, Pageable pageable);
     
     Optional<Person> findByIdAndUserId(Long id, Long userId);
+    
+    long countByUserId(Long userId);
+    
+    @Query("SELECT p FROM Person p WHERE p.user.id = :userId AND MONTH(p.dob) = :month AND DAY(p.dob) = :day")
+    List<Person> findByUserIdAndBirthMonthAndDay(@Param("userId") Long userId, @Param("month") int month, @Param("day") int day);
+
+    List<Person> findByUserId(Long userId);
 }

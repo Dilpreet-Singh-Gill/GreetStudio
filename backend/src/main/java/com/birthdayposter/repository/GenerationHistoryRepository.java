@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GenerationHistoryRepository extends JpaRepository<GenerationHistory, Long> {
     Page<GenerationHistory> findByUserId(Long userId, Pageable pageable);
+    
+    long countByUserId(Long userId);
+    
+    java.util.List<GenerationHistory> findTop3ByUserIdOrderByCreatedAtDesc(Long userId);
 }

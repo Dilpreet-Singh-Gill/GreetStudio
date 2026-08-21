@@ -1,16 +1,31 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, LogIn } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Mail, Lock, LogIn, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { authService } from '../services/authService';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // TODO: Connect to backend
-    navigate('/dashboard');
+  const successMsg = location.state?.message || '';
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      setErrorMsg('');
+      await authService.login(data);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,6 +39,18 @@ export default function Login() {
         <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
         <p className="text-slate-400">Sign in to manage your automated posters</p>
       </div>
+
+      {successMsg && (
+        <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/50 rounded-lg text-emerald-400 text-sm text-center">
+          {successMsg}
+        </div>
+      )}
+
+      {errorMsg && (
+        <div className="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
+          {errorMsg}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
@@ -56,10 +83,11 @@ export default function Login() {
 
         <button 
           type="submit" 
-          className="w-full bg-primary-600 hover:bg-primary-500 text-white rounded-lg py-2.5 font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary-500/25"
+          disabled={loading}
+          className="w-full bg-primary-600 hover:bg-primary-500 text-white rounded-lg py-2.5 font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary-500/25 disabled:opacity-70"
         >
-          <LogIn className="w-5 h-5 mr-2" />
-          Sign In
+          {loading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <LogIn className="w-5 h-5 mr-2" />}
+          {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
 

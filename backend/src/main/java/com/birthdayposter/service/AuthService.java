@@ -45,18 +45,36 @@ public class AuthService {
                 .build();
     }
 
-    public void registerUser(RegisterRequest signUpRequest) {
+    public AuthResponse registerUser(RegisterRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Error: Email is already in use!");
         }
 
+        String rawPassword = signUpRequest.getPassword();
         User user = User.builder()
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
-                .password(encoder.encode(signUpRequest.getPassword()))
+                .password(encoder.encode(rawPassword))
                 .role(Role.ROLE_USER)
                 .build();
 
         userRepository.save(user);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signUpRequest.getEmail(), rawPassword));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        return AuthResponse.builder()
+                .token(jwt)
+                .type("Bearer")
+                .id(userDetails.getId())
+                .name(userDetails.getName())
+                .email(userDetails.getEmail())
+                .role(userDetails.getAuthorities().iterator().next().getAuthority())
+                .build();
     }
 }

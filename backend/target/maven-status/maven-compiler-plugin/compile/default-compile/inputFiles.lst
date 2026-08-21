@@ -4,6 +4,7 @@ C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\conf
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\config\RestTemplateConfig.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\config\SecurityConfig.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\controller\AuthController.java
+C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\controller\DashboardController.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\controller\MediaController.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\controller\PersonController.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\controller\PosterController.java
@@ -12,6 +13,7 @@ C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\cont
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\ApiResponse.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\AuthRequest.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\AuthResponse.java
+C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\DashboardResponse.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\GenerationHistoryResponse.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\PagedResponse.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\dto\PersonRequest.java
@@ -38,6 +40,7 @@ C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\secu
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\security\UserDetailsServiceImpl.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\service\AuthService.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\service\CloudinaryService.java
+C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\service\DashboardService.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\service\EmailService.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\service\ExcelService.java
 C:\Users\dilpr\Desktop\GreetStudio\backend\src\main\java\com\birthdayposter\service\HuggingFaceService.java

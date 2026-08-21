@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Image as ImageIcon, Settings, LogOut, Clock, LayoutDashboard } from 'lucide-react';
+import { Home, Users, Image as ImageIcon, Settings, LogOut, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { authService } from '../services/authService';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: Home },
   { path: '/dashboard/people', label: 'People', icon: Users },
   { path: '/dashboard/templates', label: 'Templates', icon: ImageIcon },
   { path: '/dashboard/history', label: 'History', icon: Clock },
-  { path: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -44,7 +44,10 @@ export default function Sidebar() {
       </nav>
 
       <div className="p-4 mt-auto">
-        <button className="flex items-center w-full px-4 py-3 text-red-400 transition-colors rounded-lg hover:bg-red-500/10">
+        <button 
+          onClick={() => authService.logout()}
+          className="flex items-center w-full px-4 py-3 text-red-400 transition-colors rounded-lg hover:bg-red-500/10 cursor-pointer"
+        >
           <LogOut className="w-5 h-5 mr-3" />
           Logout
         </button>

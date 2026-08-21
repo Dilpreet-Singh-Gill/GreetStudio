@@ -21,6 +21,31 @@ const StatCard = ({ title, value, icon: Icon, color, delay }) => (
 );
 
 export default function Dashboard() {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    import('../services/dashboardService').then(({ dashboardService }) => {
+      dashboardService.getDashboardStats()
+        .then(data => {
+          setStats(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error("Failed to load dashboard stats", err);
+          setLoading(false);
+        });
+    });
+  }, []);
+
+  if (loading || !stats) {
+    return (
+      <div className="flex items-center justify-center h-full min-h-[500px]">
+        <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <header className="mb-8">
@@ -31,28 +56,28 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           title="Total People" 
-          value="1,248" 
+          value={stats.totalPeople} 
           icon={Users} 
           color="bg-primary-500" 
           delay={0.1}
         />
         <StatCard 
           title="Birthdays Today" 
-          value="12" 
+          value={stats.birthdaysToday} 
           icon={Calendar} 
           color="bg-emerald-500" 
           delay={0.2}
         />
         <StatCard 
           title="Active Templates" 
-          value="8" 
+          value={stats.activeTemplates} 
           icon={ImageIcon} 
           color="bg-indigo-500" 
           delay={0.3}
         />
         <StatCard 
           title="Posters Generated" 
-          value="4,821" 
+          value={stats.postersGenerated} 
           icon={CheckCircle} 
           color="bg-violet-500" 
           delay={0.4}
@@ -68,23 +93,27 @@ export default function Dashboard() {
         >
           <h2 className="text-xl font-bold text-slate-100 mb-4">Upcoming Birthdays</h2>
           <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold text-slate-300">
-                    JD
+            {stats.upcomingBirthdays?.length === 0 ? (
+              <p className="text-slate-400">No upcoming birthdays.</p>
+            ) : (
+              stats.upcomingBirthdays.map((b) => (
+                <div key={b.id} className="flex items-center justify-between p-4 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold text-slate-300">
+                      {b.initials}
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-200">{b.name}</p>
+                      <p className="text-sm text-slate-400">{b.department}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-slate-200">John Doe {i}</p>
-                    <p className="text-sm text-slate-400">Engineering Dept</p>
+                  <div className="text-right">
+                    <p className="text-emerald-400 font-medium">{b.daysUntilText}</p>
+                    <p className="text-sm text-slate-500">{b.dob}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-emerald-400 font-medium">Tomorrow</p>
-                  <p className="text-sm text-slate-500">Aug {15 + i}</p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </motion.div>
 
@@ -96,15 +125,21 @@ export default function Dashboard() {
         >
           <h2 className="text-xl font-bold text-slate-100 mb-4">Recent Posters</h2>
           <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center space-x-3">
-                <div className="w-12 h-16 bg-slate-800 rounded flex-shrink-0 border border-slate-700"></div>
-                <div>
-                  <p className="text-sm font-medium text-slate-300">Poster #{1040 + i}</p>
-                  <p className="text-xs text-slate-500">Generated 2h ago</p>
+            {stats.recentPosters?.length === 0 ? (
+              <p className="text-slate-400">No recent posters.</p>
+            ) : (
+              stats.recentPosters.map((p) => (
+                <div key={p.id} className="flex items-center space-x-3">
+                  <div className="w-12 h-16 bg-slate-800 rounded flex-shrink-0 border border-slate-700 overflow-hidden">
+                    {p.posterUrl ? <img src={p.posterUrl} className="w-full h-full object-cover" alt="" /> : null}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-300 truncate w-32">{p.personName}</p>
+                    <p className="text-xs text-slate-500">{p.timeAgoText}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </motion.div>
       </div>
