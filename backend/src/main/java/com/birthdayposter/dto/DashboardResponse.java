@@ -19,6 +19,7 @@ public class DashboardResponse {
     
     private List<UpcomingBirthdayDto> upcomingBirthdays;
     private List<RecentPosterDto> recentPosters;
+    private List<BirthdayNotificationDto> birthdayNotifications;
 
     @Data
     @Builder
@@ -43,4 +44,18 @@ public class DashboardResponse {
         private String timeAgoText;
         private String posterUrl;
     }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BirthdayNotificationDto {
+        private Long id;
+        private String name;
+        private String email;
+        private String department;
+        private String photoUrl;
+        private String relationship;
+    }
 }
+

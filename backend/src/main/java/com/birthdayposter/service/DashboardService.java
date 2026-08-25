@@ -56,6 +56,10 @@ public class DashboardService {
                 .map(this::mapToRecentPosterDto)
                 .collect(Collectors.toList());
 
+        List<DashboardResponse.BirthdayNotificationDto> birthdayNotifications = birthdaysTodayList.stream()
+                .map(this::mapToBirthdayNotificationDto)
+                .collect(Collectors.toList());
+
         return DashboardResponse.builder()
                 .totalPeople(totalPeople)
                 .birthdaysToday(birthdaysToday)
@@ -63,6 +67,7 @@ public class DashboardService {
                 .postersGenerated(postersGenerated)
                 .upcomingBirthdays(upcomingBirthdays)
                 .recentPosters(recentPosters)
+                .birthdayNotifications(birthdayNotifications)
                 .build();
     }
 
@@ -95,6 +100,17 @@ public class DashboardService {
                 .department(p.getDepartment() != null ? p.getDepartment() : "No Department")
                 .dob(p.getDob().getMonth().name().substring(0, 3) + " " + p.getDob().getDayOfMonth())
                 .daysUntilText(daysText)
+                .build();
+    }
+
+    private DashboardResponse.BirthdayNotificationDto mapToBirthdayNotificationDto(Person p) {
+        return DashboardResponse.BirthdayNotificationDto.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .email(p.getEmail())
+                .department(p.getDepartment() != null ? p.getDepartment() : "No Department")
+                .photoUrl(p.getPhotoUrl())
+                .relationship(p.getRelationship() != null ? p.getRelationship() : "")
                 .build();
     }
 

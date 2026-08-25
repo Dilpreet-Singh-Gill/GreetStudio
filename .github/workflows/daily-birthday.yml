@@ -10,6 +10,18 @@ jobs:
   trigger-automation:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate secrets
+        run: |
+          if [ -z "${{ secrets.BACKEND_API_URL }}" ]; then
+            echo "::error::BACKEND_API_URL secret is not set. Go to Settings → Secrets and variables → Actions and add it."
+            exit 1
+          fi
+          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "::error::CRON_SECRET secret is not set. Go to Settings → Secrets and variables → Actions and add it."
+            exit 1
+          fi
+          echo "✅ All required secrets are configured."
+
       - name: Call Backend API
         run: |
           curl -X POST "${{ secrets.BACKEND_API_URL }}/api/scheduler/daily-run" \

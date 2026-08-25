@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/birthdayposter}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:tanbeer10}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -50,9 +50,9 @@ app:
   huggingface:
     api-key: ${HF_API_KEY:}
   jwt:
-    secret: ${JWT_SECRET:SZ1wcRpqvqJE8swBZNQlXNdwYatqYCq9pMjIZ5lsjBQ=}
+    secret: ${JWT_SECRET}
     expirationMs: 86400000 # 24 hours
-  cron-secret: ${CRON_SECRET:default-secret-token-change-in-prod}
+  cron-secret: ${CRON_SECRET}
   mail:
     from: ${MAIL_FROM:noreply@greetstudio.com}
     from-name: ${MAIL_FROM_NAME:GreetStudio}
