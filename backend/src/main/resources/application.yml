@@ -9,10 +9,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   servlet:
@@ -40,7 +40,7 @@ spring:
 server:
   port: 8080
   error:
-    include-message: always
+    include-message: never
 
 app:
   cloudinary:
@@ -56,3 +56,14 @@ app:
   mail:
     from: ${MAIL_FROM:noreply@greetstudio.com}
     from-name: ${MAIL_FROM_NAME:GreetStudio}
+
+logging:
+  level:
+    root: WARN
+    com.birthdayposter: INFO
+    org.hibernate.SQL: ERROR
+    org.hibernate.type.descriptor.sql.BasicBinder: ERROR
+    com.zaxxer.hikari: WARN
+    org.springframework.security: WARN
+    org.springframework.web: WARN
+    org.springframework.boot: WARN
